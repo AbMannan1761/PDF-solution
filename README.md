@@ -1,8 +1,8 @@
-# MarkPDF — Free Online PDF Editor, Image Tools, AI Writer & File Converters
+# PDF solution — Free Online PDF Editor, Image Tools, AI Writer & File Converters
 
-A modern, fast, private, and client-side web application inspired by MarkPDF. It provides full PDF manipulation, image editing, AI writing assistants, and format converters — running 100% in your browser with zero watermark, zero sign-up, and bilingual support (বাংলা & English).
+A modern, fast, private, and client-side web application. It provides full PDF manipulation, image editing, AI writing assistants, and format converters — running 100% in your browser with zero watermark, zero sign-up, and bilingual support (বাংলা & English).
 
-![MarkPDF Preview](https://raw.githubusercontent.com/AbMannan1761/markpdf-clone/main/assets/preview.png)
+🔗 **Live Website**: [https://abmannan1761.github.io/PDF-solution/](https://abmannan1761.github.io/PDF-solution/)
 
 ---
 

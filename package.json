@@ -1,7 +1,7 @@
 {
-  "name": "markpdf-clone",
+  "name": "pdf-solution",
   "version": "1.0.0",
-  "description": "MarkPDF Clone — Free online PDF editor, image tools, AI writer & file converters",
+  "description": "PDF solution — Free online PDF editor, image tools, AI writer & file converters",
   "scripts": {
     "start": "serve .",
     "dev": "serve ."

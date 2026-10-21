@@ -1,8 +1,8 @@
 // MarkPDF Main Application Orchestrator
 
-import { ALL_TOOLS, TOOL_GROUPS } from './tools-data.js?v=9.0';
-import { translations } from './translations.js?v=9.0';
-import { ToolRunner } from './tool-runner.js?v=9.0';
+import { ALL_TOOLS, TOOL_GROUPS } from './tools-data.js?v=11.0';
+import { translations } from './translations.js?v=11.0';
+import { ToolRunner } from './tool-runner.js?v=11.0';
 
 class MarkPDFApp {
   constructor() {

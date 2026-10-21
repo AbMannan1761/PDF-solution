@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MarkPDF — Free online PDF editor, image tools, AI writer & file converters</title>
+  <title>PDF solution — Free online PDF editor, image tools, AI writer & file converters</title>
   
-  <meta name="description" content="Free online PDF editor plus image tools, an AI writer and file converters: edit text in a PDF, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
-  <meta property="og:title" content="MarkPDF — Free online PDF editor, image tools, AI writer & file converters" />
-  <meta property="og:description" content="Free online PDF editor plus image tools, an AI writer and file converters: edit text in a PDF, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
+  <meta name="description" content="PDF solution: Free online PDF editor plus image tools, an AI writer and file converters. Edit text, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
+  <meta property="og:title" content="PDF solution — Free online PDF editor, image tools, AI writer & file converters" />
+  <meta property="og:description" content="PDF solution: Free online PDF editor plus image tools, an AI writer and file converters. Edit text, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
   <meta property="og:type" content="website" />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b8a5f' stroke-width='2.4'><path d='M6 4h8l4 4v12H6z'></path><path d='M9 16v-5l3 3.2L15 11v5'></path></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><rect width='24' height='24' rx='6' fill='%230b8a5f'/><path d='M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z' stroke='white' stroke-width='1.8' stroke-linejoin='round'/><polyline points='13 3 13 9 19 9' stroke='white' stroke-width='1.8'/><path d='m8.5 14.5 2 2 4.5-4.5' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=3.3" />
+  <link rel="stylesheet" href="css/styles.css?v=3.4" />
 
   <!-- Critical Inline Fallback Styles -->
   <style>
@@ -101,14 +101,15 @@
   <header class="sticky-header">
     <div class="header-container">
       <!-- Brand Logo -->
-      <a href="#" class="brand-logo" aria-label="MarkPDF Home">
+      <a href="#" class="brand-logo" aria-label="PDF solution Home">
         <span class="brand-icon-box">
-          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 4h8l4 4v12H6z"></path>
-            <path d="M9 16v-5l3 3.2L15 11v5"></path>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="m9 15 2 2 4-4" stroke-width="2.5" stroke="#ffffff"></path>
           </svg>
         </span>
-        <span>Mark<span class="brand-accent">PDF</span></span>
+        <span class="text-xl font-extrabold tracking-tight">PDF <span class="brand-accent font-black">solution</span></span>
       </a>
 
       <!-- Desktop Navigation Menu -->
@@ -473,11 +474,11 @@
         <div>
           <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="supportTitle">Buy me a cup of tea?</h3>
           <p class="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed" data-i18n="supportDesc">
-            I build and run MarkPDF on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.
+            I build and run PDF solution on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.
           </p>
         </div>
 
-        <button type="button" class="action-btn text-sm whitespace-nowrap" onclick="alert('Thank you for supporting MarkPDF!')">
+        <button type="button" class="action-btn text-sm whitespace-nowrap" onclick="alert('Thank you for supporting PDF solution!')">
           <svg class="w-4 h-4 text-amber-300 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1M6 2v2"/></svg>
           <span data-i18n="supportBtn">Support the project</span>
         </button>
@@ -502,16 +503,20 @@
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-border">
         <div class="flex items-center gap-2">
           <span class="brand-icon-box w-7 h-7">
-            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 4h8l4 4v12H6z"></path><path d="M9 16v-5l3 3.2L15 11v5"></path></svg>
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <path d="m9 15 2 2 4-4" stroke-width="2.5" stroke="#ffffff"></path>
+            </svg>
           </span>
-          <span class="font-extrabold text-lg">Mark<span class="brand-accent">PDF</span></span>
+          <span class="font-extrabold text-lg">PDF <span class="brand-accent font-black">solution</span></span>
         </div>
         <p class="text-xs text-muted-foreground text-center md:text-right" data-i18n="footerPrivacy">
           100% Private: Files never leave your browser
         </p>
       </div>
       <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-3">
-        <p>© 2026 MarkPDF. <span data-i18n="footerRights">All rights reserved. Free & Open Toolkit.</span></p>
+        <p>© 2026 PDF solution. <span data-i18n="footerRights">All rights reserved. Free & Open Toolkit.</span></p>
         <div class="flex items-center gap-4">
           <a href="#tools" class="hover:underline">Tools</a>
           <a href="#support-section" class="hover:underline">Support</a>
@@ -552,6 +557,6 @@
   </div>
 
   <!-- Main Scripts -->
-  <script type="module" src="js/app.js?v=9.0"></script>
+  <script type="module" src="js/app.js?v=11.0"></script>
 </body>
 </html>

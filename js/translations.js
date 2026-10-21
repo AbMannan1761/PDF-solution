@@ -2,7 +2,7 @@
 
 export const translations = {
   en: {
-    brandName: "MarkPDF",
+    brandName: "PDF solution",
     support: "Support",
     search: "Search",
     searchPlaceholder: "Search tools... (Press '/' to focus)",
@@ -57,7 +57,7 @@ export const translations = {
     
     // Support Card
     supportTitle: "Buy me a cup of tea?",
-    supportDesc: "I build and run MarkPDF on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.",
+    supportDesc: "I build and run PDF solution on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.",
     supportBtn: "Support the project",
     
     // FAQ
@@ -65,7 +65,7 @@ export const translations = {
     faqSubtitle: "Everything you need to know about privacy, capabilities and limits",
     faqs: [
       {
-        q: "Is MarkPDF really free?",
+        q: "Is PDF solution really free?",
         a: "Yes. Every tool is 100% free with no sign-up, no watermark, and no artificial limit on how many files you process or edits you make."
       },
       {
@@ -82,7 +82,7 @@ export const translations = {
       },
       {
         q: "Do I need to install any software?",
-        a: "None. MarkPDF runs directly in any modern browser on Windows, macOS, Linux, Android, and iOS."
+        a: "None. PDF solution runs directly in any modern browser on Windows, macOS, Linux, Android, and iOS."
       }
     ],
     
@@ -93,7 +93,7 @@ export const translations = {
   },
   
   bn: {
-    brandName: "MarkPDF",
+    brandName: "PDF solution",
     support: "সহায়তা",
     search: "অনুসন্ধান",
     searchPlaceholder: "টুল খুঁজুন... ('/' চাপুন)",
@@ -148,7 +148,7 @@ export const translations = {
     
     // Support Card
     supportTitle: "এক কাপ চা খাওয়াবেন?",
-    supportDesc: "আমি নিজেই MarkPDF তৈরি ও পরিচালনা করি, সবার জন্য সম্পূর্ণ ফ্রি: কোনো বিজ্ঞাপন, সাইন-আপ বা ওয়াটারমার্ক নেই। কাজে লাগলে যে কোনো অনুদান এটিকে সচল রাখতে সাহায্য করবে।",
+    supportDesc: "আমি নিজেই PDF solution তৈরি ও পরিচালনা করি, সবার জন্য সম্পূর্ণ ফ্রি: কোনো বিজ্ঞাপন, সাইন-আপ বা ওয়াটারমার্ক নেই। কাজে লাগলে যে কোনো অনুদান এটিকে সচল রাখতে সাহায্য করবে।",
     supportBtn: "প্রজেক্টে সহায়তা করুন",
     
     // FAQ
@@ -156,7 +156,7 @@ export const translations = {
     faqSubtitle: "গোপনীয়তা, ফাইল প্রসেসিং এবং ব্যবহারবিধি সম্পর্কিত তথ্য",
     faqs: [
       {
-        q: "MarkPDF কি সত্যিই সম্পূর্ণ ফ্রি?",
+        q: "PDF solution কি সত্যিই সম্পূর্ণ ফ্রি?",
         a: "হ্যাঁ। প্রতিটি টুল ১০০% ফ্রি, কোনো সাইন-আপের ঝামেলা নেই, কোনো ওয়াটারমার্ক পড়ে না এবং ফাইল সংখ্যার কোনো সীমা নেই।"
       },
       {
