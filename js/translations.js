@@ -59,6 +59,10 @@ export const translations = {
     supportTitle: "Buy me a cup of tea?",
     supportDesc: "I build and run PDF solution on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.",
     supportBtn: "Support the project",
+    buyTeaBtn: "Buy a cup of tea",
+    teaSubtext: "Opens SupportKori · any amount · optional",
+    cantGiveText: "Can't give? Telling one friend helps just as much.",
+    tellFriendBtn: "Tell a friend",
     
     // FAQ
     faqTitle: "Frequently Asked Questions",
@@ -150,6 +154,10 @@ export const translations = {
     supportTitle: "এক কাপ চা খাওয়াবেন?",
     supportDesc: "আমি নিজেই PDF solution তৈরি ও পরিচালনা করি, সবার জন্য সম্পূর্ণ ফ্রি: কোনো বিজ্ঞাপন, সাইন-আপ বা ওয়াটারমার্ক নেই। কাজে লাগলে যে কোনো অনুদান এটিকে সচল রাখতে সাহায্য করবে।",
     supportBtn: "প্রজেক্টে সহায়তা করুন",
+    buyTeaBtn: "এক কাপ চা খাওয়ান",
+    teaSubtext: "SupportKori-তে খুলবে · যেকোনো পরিমাণ · ঐচ্ছিক",
+    cantGiveText: "দিতে পারছেন না? একজন বন্ধুকে জানালেও সমান উপকার হবে।",
+    tellFriendBtn: "বন্ধুকে জানান",
     
     // FAQ
     faqTitle: "সাধারণ জিজ্ঞাসা (FAQ)",

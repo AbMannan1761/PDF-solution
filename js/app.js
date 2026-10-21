@@ -1,8 +1,8 @@
 // MarkPDF Main Application Orchestrator
 
-import { ALL_TOOLS, TOOL_GROUPS } from './tools-data.js?v=11.0';
-import { translations } from './translations.js?v=11.0';
-import { ToolRunner } from './tool-runner.js?v=11.0';
+import { ALL_TOOLS, TOOL_GROUPS } from './tools-data.js?v=13.0';
+import { translations } from './translations.js?v=13.0';
+import { ToolRunner } from './tool-runner.js?v=13.0';
 
 class MarkPDFApp {
   constructor() {
@@ -24,6 +24,7 @@ class MarkPDFApp {
     this.setupSearchPalette();
     this.setupNavigationDropdowns();
     this.setupFaqAccordion();
+    this.setupTellFriend();
     
     this.updateLanguageUI();
     this.renderToolCards();
@@ -466,6 +467,37 @@ class MarkPDFApp {
 
   setupFaqAccordion() {
     this.renderFaqSection();
+  }
+
+  setupTellFriend() {
+    const btn = document.getElementById('tell-friend-btn');
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      const shareData = {
+        title: 'PDF solution — Free online PDF editor & tools',
+        text: 'Check out PDF solution, free client-side PDF and office tools with no watermark or sign-up!',
+        url: 'https://abmannan1761.github.io/PDF-solution/'
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        const span = btn.querySelector('span');
+        const orig = span ? span.textContent : '';
+        if (span) span.textContent = this.currentLang === 'bn' ? 'লিংক কপি হয়েছে!' : 'Link copied!';
+        setTimeout(() => {
+          if (span) span.textContent = orig;
+        }, 2500);
+      } catch (err) {
+        prompt('Copy this link:', shareData.url);
+      }
+    });
   }
 }
 

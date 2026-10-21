@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><rect width='24' height='24' rx='6' fill='%230b8a5f'/><path d='M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z' stroke='white' stroke-width='1.8' stroke-linejoin='round'/><polyline points='13 3 13 9 19 9' stroke='white' stroke-width='1.8'/><path d='m8.5 14.5 2 2 4.5-4.5' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=4.1" />
+  <link rel="stylesheet" href="css/styles.css?v=5.0" />
 
   <!-- Critical Inline Fallback Styles -->
   <style>
@@ -452,39 +452,37 @@
       </div>
     </section>
 
-    <!-- Tea Support Banner Section -->
+    <!-- Tea Support Banner Section (Exact Match to MarkPDF) -->
     <section id="support-section" class="support-section">
-      <div class="tea-banner-card">
-        <!-- Seven Layer Cup SVG Graphic -->
-        <svg viewBox="0 0 64 108" aria-hidden="true" class="w-16 h-28 hidden md:block">
-          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.3">
-            <path d="M24 18c-4-3.5 4-6 0-10"></path>
-            <path d="M34 17c-4-3.5 4-6 0-11"></path>
-            <path d="M43 18c-4-3.5 4-6 0-10"></path>
-          </g>
-          <g>
-            <rect x="14" y="34" width="36" height="9" fill="#7cc79c" rx="2"></rect>
-            <rect x="14" y="43" width="36" height="9" fill="#f6ecd0"></rect>
-            <rect x="14" y="52" width="36" height="9" fill="#f2cf6b"></rect>
-            <rect x="14" y="61" width="36" height="9" fill="#e89a34"></rect>
-            <rect x="14" y="70" width="36" height="9" fill="#c8581f"></rect>
-            <rect x="14" y="79" width="36" height="9" fill="#8c2f17"></rect>
-            <rect x="14" y="88" width="36" height="10" fill="#4a190f" rx="3"></rect>
-          </g>
-          <path d="M10 24H54L49.6 98Q49.2 104 43 104H21Q14.8 104 14.4 98Z" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.4"></path>
-        </svg>
+      <div class="tea-card-exact">
+        <div class="tea-stripe-top"></div>
+        <div class="tea-card-content">
+          <div class="tea-card-left">
+            <h2 class="tea-card-title" data-i18n="supportTitle">Buy me a cup of tea?</h2>
+            <p class="tea-card-desc" data-i18n="supportDesc">
+              I build and run PDF solution on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.
+            </p>
+          </div>
 
-        <div>
-          <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="supportTitle">Buy me a cup of tea?</h3>
-          <p class="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed" data-i18n="supportDesc">
-            I build and run PDF solution on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.
-          </p>
+          <div class="tea-card-right">
+            <!-- Buy a cup of tea button -->
+            <a href="https://www.supportkori.com/abmannan" target="_blank" rel="noopener noreferrer" class="tea-buy-btn">
+              <svg class="w-4 h-4 mr-2 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+              <span data-i18n="buyTeaBtn">Buy a cup of tea</span>
+              <svg class="w-3.5 h-3.5 ml-1.5 shrink-0 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </a>
+            <span class="tea-subtext" data-i18n="teaSubtext">Opens SupportKori · any amount · optional</span>
+
+            <!-- Tell a friend box -->
+            <div class="tea-share-box">
+              <p class="tea-share-text" data-i18n="cantGiveText">Can't give? Telling one friend helps just as much.</p>
+              <button type="button" id="tell-friend-btn" class="tea-share-btn">
+                <svg class="w-3.5 h-3.5 mr-1.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span data-i18n="tellFriendBtn">Tell a friend</span>
+              </button>
+            </div>
+          </div>
         </div>
-
-        <a href="https://www.supportkori.com/abmannan" target="_blank" rel="noopener noreferrer" class="action-btn text-sm whitespace-nowrap inline-flex items-center gap-2">
-          <svg class="w-4 h-4 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1M6 2v2"/></svg>
-          <span data-i18n="supportBtn">Support the project</span>
-        </a>
       </div>
     </section>
 
@@ -563,6 +561,6 @@
   </div>
 
   <!-- Main Scripts -->
-  <script type="module" src="js/app.js?v=12.0"></script>
+  <script type="module" src="js/app.js?v=13.0"></script>
 </body>
 </html>
