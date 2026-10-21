@@ -496,8 +496,20 @@
       </ul>
     </section>
 
-    <!-- Dynamic Tools Grid Section -->
+    <!-- All Tools Section (Shown 3rd!) -->
     <section id="tools" class="tools-section">
+      <h2 class="section-title" data-i18n="pickToolTitle">Pick the tool for the job</h2>
+
+      <!-- Category Filter Buttons -->
+      <div class="category-filter-bar" role="tablist">
+        <button type="button" role="tab" class="category-tab-btn seg-on" data-category="popular" data-i18n="popular">Popular</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="pdf" data-i18n="pdfTools">PDF tools</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="image" data-i18n="imageTools">Image tools</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="write" data-i18n="aiWrite">AI Write</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="file" data-i18n="fileTools">File tools</button>
+      </div>
+
+      <!-- Dynamic Tools Grid Container -->
       <div id="tools-grid" class="tools-grid">
         <!-- Rendered dynamically by app.js -->
       </div>

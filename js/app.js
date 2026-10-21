@@ -8,7 +8,7 @@ class MarkPDFApp {
   constructor() {
     this.currentLang = localStorage.getItem('markpdf:lang') || 'en';
     this.currentTheme = localStorage.getItem('markpdf:theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    this.currentFilter = 'all';
+    this.currentFilter = 'popular';
     this.searchQuery = '';
     this.toolRunner = null;
     
@@ -164,6 +164,16 @@ class MarkPDFApp {
         pill.setAttribute('aria-selected', 'true');
 
         this.currentFilter = pill.getAttribute('data-pill-category') || 'all';
+        const tabs = document.querySelectorAll('.category-tab-btn');
+        tabs.forEach(t => {
+          if (t.getAttribute('data-category') === this.currentFilter) {
+            t.classList.add('seg-on');
+            t.setAttribute('aria-selected', 'true');
+          } else {
+            t.classList.remove('seg-on');
+            t.setAttribute('aria-selected', 'false');
+          }
+        });
         this.renderToolCards();
       });
     });
@@ -243,6 +253,18 @@ class MarkPDFApp {
       const grid = document.createElement('div');
       grid.className = 'category-tools-grid';
       filteredTools.forEach(tool => {
+        grid.appendChild(this.createToolCardElement(tool));
+      });
+      container.appendChild(grid);
+      return;
+    }
+
+    // Popular Tools Grid View (Matches "Pick the tool for the job" Screenshot 3)
+    if (!q && filter === 'popular') {
+      const popularTools = ALL_TOOLS.filter(t => t.popular);
+      const grid = document.createElement('div');
+      grid.className = 'category-tools-grid';
+      popularTools.forEach(tool => {
         grid.appendChild(this.createToolCardElement(tool));
       });
       container.appendChild(grid);
@@ -616,6 +638,16 @@ class MarkPDFApp {
         tab.setAttribute('aria-selected', 'true');
         
         this.currentFilter = tab.getAttribute('data-category');
+        const pills = document.querySelectorAll('.tool-pill[data-pill-category]');
+        pills.forEach(p => {
+          if (p.getAttribute('data-pill-category') === this.currentFilter) {
+            p.classList.add('active');
+            p.setAttribute('aria-selected', 'true');
+          } else {
+            p.classList.remove('active');
+            p.setAttribute('aria-selected', 'false');
+          }
+        });
         this.renderToolCards();
       });
     });
