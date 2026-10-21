@@ -866,6 +866,28 @@ button, input, select, textarea {
   background: var(--border);
 }
 
+/* Bento Grid Container (Shown 2nd!) */
+.bento-grid {
+  max-width: 1240px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .bento-tile {
   display: flex;
   flex-direction: column;
@@ -876,43 +898,136 @@ button, input, select, textarea {
   padding: 1.25rem;
   overflow: hidden;
   position: relative;
-  min-height: 12rem;
+  min-height: 12.5rem;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .bento-tile:hover {
   transform: translateY(-4px);
+  border-color: var(--primary);
   box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+}
+
+.bento-tile.active-panel {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), 0 16px 32px -8px rgba(0, 0, 0, 0.16) !important;
+  transform: translateY(-2px);
 }
 
 .bento-demo {
   position: relative;
-  height: 5.5rem;
+  height: 5.75rem;
   border-radius: 0.85rem;
   margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.03);
 }
 
-.dark .bento-demo {
-  background: rgba(255, 255, 255, 0.03);
-}
+.fam-pdf .bento-demo { background: #f5f3ff; }
+.dark .fam-pdf .bento-demo { background: rgba(147, 51, 234, 0.14); }
 
-.fam-pdf .bento-demo { background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(111, 86, 236, 0.15)); }
-.fam-image .bento-demo { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.15)); }
-.fam-write .bento-demo { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(234, 88, 12, 0.15)); }
-.fam-file .bento-demo { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.15)); }
+.fam-image .bento-demo { background: #eff6ff; }
+.dark .fam-image .bento-demo { background: rgba(59, 130, 246, 0.14); }
+
+.fam-write .bento-demo { background: #fff7ed; }
+.dark .fam-write .bento-demo { background: rgba(245, 158, 11, 0.14); }
+
+.fam-file .bento-demo { background: #f0fdfa; }
+.dark .fam-file .bento-demo { background: rgba(20, 184, 166, 0.14); }
 
 .bento-chip {
-  padding: 0.2rem 0.55rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 0.5rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dark .bento-chip {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Panel Dropzone Section (Revealed when a panel is clicked) */
+.panel-dropzone-section {
+  max-width: 46rem;
+  margin: 1.5rem auto 0;
+  padding: 0 1rem;
+  scroll-margin-top: 5rem;
+  transition: all 0.3s ease;
+}
+
+.panel-dropzone-section:not(.hidden) {
+  animation: dropzoneSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropzoneSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropzone-close-btn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.dropzone-close-btn:hover {
+  background: var(--border);
+  color: var(--foreground);
+  transform: scale(1.08);
+}
+
+.dropzone-close-btn svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.panel-badge-pill {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.04em;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--primary);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.home-card {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0.85rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 18px 36px -25px rgba(0, 0, 0, 0.12);
 }
 
 /* Stats Pill Row */

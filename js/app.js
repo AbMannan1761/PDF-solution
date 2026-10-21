@@ -441,6 +441,17 @@ class MarkPDFApp {
 
     // Synchronize tools filter below
     this.currentFilter = category;
+    const pills = document.querySelectorAll('.tool-pill[data-pill-category]');
+    pills.forEach(p => {
+      if (p.getAttribute('data-pill-category') === category) {
+        p.classList.add('active');
+        p.setAttribute('aria-selected', 'true');
+      } else {
+        p.classList.remove('active');
+        p.setAttribute('aria-selected', 'false');
+      }
+    });
+
     const tabs = document.querySelectorAll('.category-tab-btn');
     tabs.forEach(t => {
       if (t.getAttribute('data-category') === category) {
