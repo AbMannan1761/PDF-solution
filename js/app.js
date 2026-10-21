@@ -178,33 +178,46 @@ class MarkPDFApp {
       });
     });
 
-    // 2. In-page prominent search input
-    const searchInput = document.getElementById('main-tools-search-input');
-    const clearBtn = document.getElementById('clear-search-btn');
+    // 2. In-page prominent search inputs (both Section 1 and Section 3)
+    const searchInputs = [
+      document.getElementById('main-tools-search-input'),
+      document.getElementById('section-tools-search-input')
+    ].filter(Boolean);
 
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
+    const clearBtns = [
+      document.getElementById('clear-search-btn'),
+      document.getElementById('clear-section-search-btn')
+    ].filter(Boolean);
+
+    searchInputs.forEach(input => {
+      input.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.trim().toLowerCase();
-        if (clearBtn) {
+        // Keep other inputs synchronized
+        searchInputs.forEach(other => {
+          if (other !== input) other.value = e.target.value;
+        });
+        clearBtns.forEach(btn => {
           if (this.searchQuery) {
-            clearBtn.classList.remove('hidden');
+            btn.classList.remove('hidden');
           } else {
-            clearBtn.classList.add('hidden');
+            btn.classList.add('hidden');
           }
-        }
+        });
         this.renderToolCards();
       });
-    }
+    });
 
-    if (clearBtn && searchInput) {
-      clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
+    clearBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        searchInputs.forEach(input => {
+          input.value = '';
+        });
         this.searchQuery = '';
-        clearBtn.classList.add('hidden');
+        clearBtns.forEach(b => b.classList.add('hidden'));
         this.renderToolCards();
-        searchInput.focus();
+        if (searchInputs[0]) searchInputs[0].focus();
       });
-    }
+    });
   }
 
   // --- TOOL CARDS RENDERING (EXACT MATCH TO MarkPDF CATEGORIZED LAYOUT) ---

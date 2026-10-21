@@ -500,8 +500,30 @@
     <section id="tools" class="tools-section">
       <h2 class="section-title" data-i18n="pickToolTitle">Pick the tool for the job</h2>
 
+      <!-- Prominent Search Panel for Tools Section (Exact Match to Reference) -->
+      <div class="tools-search-wrapper section-search-wrapper">
+        <div class="tools-search-box">
+          <svg class="tools-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="section-tools-search-input" 
+            class="tools-search-input" 
+            placeholder="Search tools..." 
+            data-i18n="searchToolsPlaceholder" 
+            autocomplete="off"
+          />
+          <button type="button" id="clear-section-search-btn" class="tools-search-clear hidden" aria-label="Clear search">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
       <!-- Category Filter Buttons -->
       <div class="category-filter-bar" role="tablist">
+        <button type="button" role="tab" class="category-tab-btn" data-category="all" data-i18n="pillAll">All</button>
         <button type="button" role="tab" class="category-tab-btn seg-on" data-category="popular" data-i18n="popular">Popular</button>
         <button type="button" role="tab" class="category-tab-btn" data-category="pdf" data-i18n="pdfTools">PDF tools</button>
         <button type="button" role="tab" class="category-tab-btn" data-category="image" data-i18n="imageTools">Image tools</button>

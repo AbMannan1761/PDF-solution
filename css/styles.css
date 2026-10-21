@@ -491,6 +491,11 @@ button, input, select, textarea {
   margin: 1.15rem auto 1rem;
 }
 
+.section-search-wrapper {
+  max-width: 38rem;
+  margin: 0.65rem auto 1.15rem;
+}
+
 .tools-search-box {
   position: relative;
   display: flex;
