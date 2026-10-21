@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MarkPDF — Free online PDF editor, image tools, AI writer & file converters</title>
+  
+  <meta name="description" content="Free online PDF editor plus image tools, an AI writer and file converters: edit text in a PDF, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
+  <meta property="og:title" content="MarkPDF — Free online PDF editor, image tools, AI writer & file converters" />
+  <meta property="og:description" content="Free online PDF editor plus image tools, an AI writer and file converters: edit text in a PDF, merge, compress, resize photos, write, convert CSV and more. No sign-up, no watermark, files stay in your browser." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b8a5f' stroke-width='2.4'><path d='M6 4h8l4 4v12H6z'></path><path d='M9 16v-5l3 3.2L15 11v5'></path></svg>" />
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css?v=3.3" />
+
+  <!-- Critical Inline Fallback Styles -->
+  <style>
+    svg:not(.home-art) {
+      max-width: 100%;
+    }
+    .w-4, .h-4, .size-4, svg.w-4 { width: 1rem !important; height: 1rem !important; max-width: 1rem !important; max-height: 1rem !important; }
+    .w-5, .h-5, .size-5, svg.w-5 { width: 1.25rem !important; height: 1.25rem !important; max-width: 1.25rem !important; max-height: 1.25rem !important; }
+    .w-6, .h-6, .size-6, svg.w-6 { width: 1.5rem !important; height: 1.5rem !important; max-width: 1.5rem !important; max-height: 1.5rem !important; }
+    .w-12, .h-12, svg.w-12 { width: 3rem !important; height: 3rem !important; max-width: 3rem !important; max-height: 3rem !important; }
+    .w-16, .h-16, svg.w-16 { width: 4rem !important; height: 4rem !important; max-width: 4rem !important; max-height: 4rem !important; }
+    .modal-backdrop.hidden, .hidden, [hidden] { display: none !important; }
+
+    /* Dropdown Menus Positioning & Vertical List Layout */
+    .relative { position: relative !important; }
+    .nav-dropdown-wrapper { position: relative !important; }
+    .nav-dropdown-menu {
+      position: absolute !important;
+      top: calc(100% + 0.5rem) !important;
+      left: 0 !important;
+      width: 15rem !important;
+      background: var(--card, #ffffff) !important;
+      border: 1px solid var(--border, #e2e8f0) !important;
+      border-radius: 1rem !important;
+      padding: 0.5rem !important;
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25) !important;
+      z-index: 60 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.25rem !important;
+    }
+    .dark .nav-dropdown-menu {
+      background: #111823 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .nav-dropdown-menu.hidden {
+      display: none !important;
+    }
+    .nav-dropdown-menu a, .nav-dropdown-item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.65rem !important;
+      width: 100% !important;
+      padding: 0.6rem 0.85rem !important;
+      border-radius: 0.65rem !important;
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+      color: var(--foreground, #0f172a) !important;
+      text-decoration: none !important;
+      box-sizing: border-box !important;
+      transition: all 0.15s ease !important;
+    }
+    .dark .nav-dropdown-menu a, .dark .nav-dropdown-item {
+      color: #f1f5f9 !important;
+    }
+    .nav-dropdown-menu a:hover, .nav-dropdown-item:hover {
+      background: var(--muted, #f1f5f9) !important;
+      color: var(--primary, #10b981) !important;
+      transform: translateX(3px) !important;
+    }
+    .dark .nav-dropdown-menu a:hover, .dark .nav-dropdown-item:hover {
+      background: #1e293b !important;
+      color: #34d399 !important;
+    }
+  </style>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <!-- Ambient Gradient Background Elements -->
+  <div class="live-drift" aria-hidden="true">
+    <i></i>
+    <i></i>
+    <i></i>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky-header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo" aria-label="MarkPDF Home">
+        <span class="brand-icon-box">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 4h8l4 4v12H6z"></path>
+            <path d="M9 16v-5l3 3.2L15 11v5"></path>
+          </svg>
+        </span>
+        <span>Mark<span class="brand-accent">PDF</span></span>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-links" aria-label="Main Navigation">
+        <div class="relative">
+          <button type="button" class="nav-dropdown-btn">
+            <span data-i18n="pdfTools">PDF tools</span>
+            <svg class="w-4 h-4 ml-0.5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu hidden">
+            <a href="#tools" class="nav-dropdown-item" data-tool="merge">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M14 3a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1"/><path d="M19 3a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1"/></svg>
+              <span data-tool-title="merge">Merge PDF</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="split">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+              <span data-tool-title="split">Split PDF</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="compress">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              <span data-tool-title="compress">Compress PDF</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="edit">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span data-tool-title="edit">Edit PDF</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="sign">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/></svg>
+              <span data-tool-title="sign">Sign PDF</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <button type="button" class="nav-dropdown-btn">
+            <span data-i18n="imageTools">Image tools</span>
+            <svg class="w-4 h-4 ml-0.5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu hidden">
+            <a href="#tools" class="nav-dropdown-item" data-tool="imgResize">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              <span data-tool-title="imgResize">Resize Image</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="imgCompress">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              <span data-tool-title="imgCompress">Compress Image</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="imgCrop">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+              <span data-tool-title="imgCrop">Crop Image</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="imgFilter">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg>
+              <span data-tool-title="imgFilter">Photo Filters</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <button type="button" class="nav-dropdown-btn">
+            <span data-i18n="aiWrite">AI Write</span>
+            <svg class="w-4 h-4 ml-0.5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu hidden">
+            <a href="#tools" class="nav-dropdown-item" data-tool="wParagraph">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+              <span data-tool-title="wParagraph">Paragraph Writer</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="wRewrite">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+              <span data-tool-title="wRewrite">Sentence Rewriter</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="wGrammar">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span data-tool-title="wGrammar">Grammar Fixer</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="wEmail">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span data-tool-title="wEmail">Email Writer</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <button type="button" class="nav-dropdown-btn">
+            <span data-i18n="fileTools">File tools</span>
+            <svg class="w-4 h-4 ml-0.5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu hidden">
+            <a href="#tools" class="nav-dropdown-item" data-tool="csv2json">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>
+              <span data-tool-title="csv2json">CSV to JSON</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="json2csv">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span data-tool-title="json2csv">JSON to CSV</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="qr">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/></svg>
+              <span data-tool-title="qr">QR Code Generator</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="hashGen">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/></svg>
+              <span data-tool-title="hashGen">Hash Generator</span>
+            </a>
+            <a href="#tools" class="nav-dropdown-item" data-tool="passwordGen">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+              <span data-tool-title="passwordGen">Password Generator</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Header Controls -->
+      <div class="header-actions">
+        <!-- Support Button -->
+        <a href="#support-section" class="action-btn-tea">
+          <svg class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1M6 2v2"/></svg>
+          <span data-i18n="support">Support</span>
+        </a>
+
+        <!-- Search Bar Button -->
+        <button type="button" class="search-bar-btn search-trigger-btn" aria-label="Search tools">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span data-i18n="search">Search</span>
+          <kbd class="kbd-shortcut">/</kbd>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button type="button" id="theme-toggle-btn" class="ctl-btn" aria-label="Toggle dark mode">
+          <svg class="w-5 h-5 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+
+        <!-- Language Switcher Pill -->
+        <div class="seg" role="group" aria-label="Language">
+          <button type="button" id="lang-btn-bn" aria-pressed="false">বাংলা</button>
+          <button type="button" id="lang-btn-en" aria-pressed="true" class="seg-on">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero-section">
+      <h1 class="hero-title">
+        <span data-i18n="heroTitleLine1">Drop a file.</span><br />
+        <span class="brand-accent" data-i18n="heroTitleLine2">Pick the job.</span>
+      </h1>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">Free tools for PDFs, images, writing and files</p>
+
+      <!-- Hero Dropzone Card -->
+      <div class="home-card">
+        <input type="file" id="hero-file-input" multiple class="hidden" />
+        <div id="hero-dropzone" class="dropzone-inner">
+          <svg viewBox="0 0 132 112" aria-hidden="true" class="home-art">
+            <g transform="rotate(-10 52 56)">
+              <rect x="22" y="14" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
+            </g>
+            <g transform="rotate(7 80 56)">
+              <rect x="48" y="12" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
+              <rect x="58" y="26" width="26" height="7" rx="3.5" fill="var(--primary)"></rect>
+              <rect x="58" y="40" width="36" height="5" rx="2.5" fill="var(--border)"></rect>
+              <rect x="58" y="51" width="30" height="5" rx="2.5" fill="var(--border)"></rect>
+              <rect x="58" y="62" width="34" height="5" rx="2.5" fill="var(--border)"></rect>
+            </g>
+            <circle cx="98" cy="84" r="18" fill="var(--primary)"></circle>
+            <path d="M98 92V77m0 0-6 6m6-6 6 6" fill="none" stroke="var(--primary-foreground)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+
+          <button type="button" id="hero-choose-btn" class="action-btn">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+            <span data-i18n="chooseFile">Choose a file</span>
+          </button>
+          
+          <p class="text-sm text-muted-foreground" data-i18n="dropHint">or drop it anywhere on this card</p>
+          
+          <p class="inline-flex items-center gap-1.5 text-xs text-muted-foreground mt-2">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span data-i18n="privacyNotice">Free, no sign-up. Your file stays on your device.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Categories Section -->
+    <section class="bento-grid" aria-label="Tool Groups">
+      <!-- PDF Tools Bento Card -->
+      <div class="bento-tile fam-pdf glass-hover" onclick="document.querySelector('[data-category=pdf]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="size-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-base sm:text-lg" data-i18n="pdfTools">PDF tools</h3>
+              <span id="bento-pdf-count" class="text-xs text-muted-foreground">43 tools</span>
+            </div>
+          </div>
+          <span class="w-7 h-7 rounded-full bg-purple-500/10 text-purple-600 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+        <div class="bento-demo">
+          <span class="bento-chip bg-purple-600 text-white" style="position: absolute; left: 8%; top: 18%;">Merge</span>
+          <span class="bento-chip bg-emerald-600 text-white" style="position: absolute; right: 8%; top: 22%;">Signed</span>
+          <span class="bento-chip bg-card border border-border text-foreground font-mono" style="position: absolute; left: 15%; bottom: 12%;">-72%</span>
+        </div>
+      </div>
+
+      <!-- Image Tools Bento Card -->
+      <div class="bento-tile fam-image glass-hover" onclick="document.querySelector('[data-category=image]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="size-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-base sm:text-lg" data-i18n="imageTools">Image tools</h3>
+              <span id="bento-img-count" class="text-xs text-muted-foreground">18 tools</span>
+            </div>
+          </div>
+          <span class="w-7 h-7 rounded-full bg-orange-500/10 text-orange-600 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+        <div class="bento-demo">
+          <span class="bento-chip bg-orange-600 text-white" style="position: absolute; right: 10%; top: 18%;">WebP</span>
+          <span class="bento-chip bg-card border border-border text-foreground font-mono" style="position: absolute; left: 8%; top: 20%;">1920×1080</span>
+        </div>
+      </div>
+
+      <!-- AI Write Bento Card -->
+      <div class="bento-tile fam-write glass-hover" onclick="document.querySelector('[data-category=write]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="size-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-base sm:text-lg" data-i18n="aiWrite">AI Write</h3>
+              <span id="bento-ai-count" class="text-xs text-muted-foreground">21 tools</span>
+            </div>
+          </div>
+          <span class="w-7 h-7 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+        <div class="bento-demo">
+          <span class="bento-chip bg-blue-600 text-white" style="position: absolute; left: 10%; bottom: 20%;">Friendly</span>
+          <span class="bento-chip bg-card border border-border text-foreground" style="position: absolute; right: 10%; bottom: 20%;">Formal</span>
+        </div>
+      </div>
+
+      <!-- File Tools Bento Card -->
+      <div class="bento-tile fam-file glass-hover" onclick="document.querySelector('[data-category=file]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="size-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-base sm:text-lg" data-i18n="fileTools">File tools</h3>
+              <span id="bento-file-count" class="text-xs text-muted-foreground">18 tools</span>
+            </div>
+          </div>
+          <span class="w-7 h-7 rounded-full bg-teal-500/10 text-teal-600 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+        <div class="bento-demo">
+          <span class="bento-chip bg-teal-600 text-white font-mono" style="position: absolute; left: 8%; bottom: 18%;">.zip</span>
+          <span class="bento-chip bg-card border border-border text-foreground font-mono" style="position: absolute; right: 10%; top: 18%;">JSON</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-row" aria-label="At a glance">
+      <ul class="glass stats-card-list">
+        <li class="stat-item">
+          <span class="stat-icon">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </span>
+          <div>
+            <span class="block text-lg font-black" data-i18n="stat1Number">100</span>
+            <span class="block text-xs text-muted-foreground" data-i18n="stat1Label">free tools</span>
+          </div>
+        </li>
+        <li class="stat-item">
+          <span class="stat-icon">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <div>
+            <span class="block text-lg font-black" data-i18n="stat2Number">Unlimited</span>
+            <span class="block text-xs text-muted-foreground" data-i18n="stat2Label">use, no sign-up</span>
+          </div>
+        </li>
+        <li class="stat-item">
+          <span class="stat-icon">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <div>
+            <span class="block text-lg font-black" data-i18n="stat3Number">In-browser</span>
+            <span class="block text-xs text-muted-foreground" data-i18n="stat3Label">files stay on your device</span>
+          </div>
+        </li>
+        <li class="stat-item">
+          <span class="stat-icon">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+          <div>
+            <span class="block text-lg font-black" data-i18n="stat4Number">English + বাংলা</span>
+            <span class="block text-xs text-muted-foreground" data-i18n="stat4Label">in both languages</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- All Tools Section -->
+    <section id="tools" class="tools-section">
+      <h2 class="section-title" data-i18n="pickToolTitle">Pick the tool for the job</h2>
+
+      <!-- Category Filter Buttons -->
+      <div class="category-filter-bar" role="tablist">
+        <button type="button" role="tab" class="category-tab-btn seg-on" data-category="popular" data-i18n="popular">Popular</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="pdf" data-i18n="pdfTools">PDF tools</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="image" data-i18n="imageTools">Image tools</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="write" data-i18n="aiWrite">AI Write</button>
+        <button type="button" role="tab" class="category-tab-btn" data-category="file" data-i18n="fileTools">File tools</button>
+      </div>
+
+      <!-- Dynamic Tools Grid Container -->
+      <div id="tools-grid" class="tools-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Tea Support Banner Section -->
+    <section id="support-section" class="support-section">
+      <div class="tea-banner-card">
+        <!-- Seven Layer Cup SVG Graphic -->
+        <svg viewBox="0 0 64 108" aria-hidden="true" class="w-16 h-28 hidden md:block">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.3">
+            <path d="M24 18c-4-3.5 4-6 0-10"></path>
+            <path d="M34 17c-4-3.5 4-6 0-11"></path>
+            <path d="M43 18c-4-3.5 4-6 0-10"></path>
+          </g>
+          <g>
+            <rect x="14" y="34" width="36" height="9" fill="#7cc79c" rx="2"></rect>
+            <rect x="14" y="43" width="36" height="9" fill="#f6ecd0"></rect>
+            <rect x="14" y="52" width="36" height="9" fill="#f2cf6b"></rect>
+            <rect x="14" y="61" width="36" height="9" fill="#e89a34"></rect>
+            <rect x="14" y="70" width="36" height="9" fill="#c8581f"></rect>
+            <rect x="14" y="79" width="36" height="9" fill="#8c2f17"></rect>
+            <rect x="14" y="88" width="36" height="10" fill="#4a190f" rx="3"></rect>
+          </g>
+          <path d="M10 24H54L49.6 98Q49.2 104 43 104H21Q14.8 104 14.4 98Z" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.4"></path>
+        </svg>
+
+        <div>
+          <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="supportTitle">Buy me a cup of tea?</h3>
+          <p class="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed" data-i18n="supportDesc">
+            I build and run MarkPDF on my own, free for everyone: no ads, no sign-up, no watermark. If it helped, any amount keeps it going.
+          </p>
+        </div>
+
+        <button type="button" class="action-btn text-sm whitespace-nowrap" onclick="alert('Thank you for supporting MarkPDF!')">
+          <svg class="w-4 h-4 text-amber-300 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1M6 2v2"/></svg>
+          <span data-i18n="supportBtn">Support the project</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl sm:text-3xl font-extrabold" data-i18n="faqTitle">Frequently Asked Questions</h2>
+        <p class="text-muted-foreground text-sm mt-2" data-i18n="faqSubtitle">Everything you need to know about privacy, capabilities and limits</p>
+      </div>
+      <div id="faq-accordion-list" class="space-y-2">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-border">
+        <div class="flex items-center gap-2">
+          <span class="brand-icon-box w-7 h-7">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 4h8l4 4v12H6z"></path><path d="M9 16v-5l3 3.2L15 11v5"></path></svg>
+          </span>
+          <span class="font-extrabold text-lg">Mark<span class="brand-accent">PDF</span></span>
+        </div>
+        <p class="text-xs text-muted-foreground text-center md:text-right" data-i18n="footerPrivacy">
+          100% Private: Files never leave your browser
+        </p>
+      </div>
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-3">
+        <p>© 2026 MarkPDF. <span data-i18n="footerRights">All rights reserved. Free & Open Toolkit.</span></p>
+        <div class="flex items-center gap-4">
+          <a href="#tools" class="hover:underline">Tools</a>
+          <a href="#support-section" class="hover:underline">Support</a>
+          <a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:underline">Top ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Tool Execution Modal -->
+  <div id="tool-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div id="tool-modal-dialog" class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <span id="tool-modal-category" class="text-xs font-bold uppercase tracking-wider text-primary">PDF • EDIT</span>
+          <h3 id="tool-modal-title" class="text-lg font-bold">Tool Workspace</h3>
+        </div>
+        <button id="tool-modal-close" class="modal-close-btn" aria-label="Close dialog">✕</button>
+      </div>
+      <div id="tool-modal-body" class="modal-body">
+        <!-- Rendered dynamically by tool-runner.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Instant Search Palette Modal -->
+  <div id="search-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="search-palette-box">
+      <div class="search-input-wrapper">
+        <svg class="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-palette-input" class="search-palette-input" placeholder="Search tools... (Press '/' to focus)" />
+        <button id="search-palette-close" class="text-xs px-2 py-1 rounded bg-muted text-muted-foreground hover:text-foreground">ESC</button>
+      </div>
+      <div id="search-palette-results" class="search-results-list">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Scripts -->
+  <script type="module" src="js/app.js?v=9.0"></script>
+</body>
+</html>
