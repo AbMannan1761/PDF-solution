@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><rect width='24' height='24' rx='6' fill='%230b8a5f'/><path d='M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z' stroke='white' stroke-width='1.8' stroke-linejoin='round'/><polyline points='13 3 13 9 19 9' stroke='white' stroke-width='1.8'/><path d='m8.5 14.5 2 2 4.5-4.5' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=5.0" />
+  <link rel="stylesheet" href="css/styles.css?v=6.0" />
 
   <!-- Critical Inline Fallback Styles -->
   <style>
@@ -258,51 +258,19 @@
 
   <!-- Hero Section -->
   <main>
-    <section class="hero-section">
-      <h1 class="hero-title">
-        <span data-i18n="heroTitleLine1">Drop a file.</span>
-        <span class="brand-accent" data-i18n="heroTitleLine2">Pick the job.</span>
+    <!-- Hero Intro Section (Title & Panels First) -->
+    <section class="hero-intro-section">
+      <h1 class="hero-intro-title">
+        <span data-i18n="mainHeroLine1">All-in-one free tools for</span>
+        <span class="brand-accent" data-i18n="mainHeroLine2">PDFs, images, writing & files</span>
       </h1>
-      <p class="hero-subtitle" data-i18n="heroSubtitle">Free tools for PDFs, images, writing and files</p>
-
-      <!-- Hero Dropzone Card -->
-      <div class="home-card">
-        <input type="file" id="hero-file-input" multiple class="hidden" />
-        <div id="hero-dropzone" class="dropzone-inner">
-          <svg viewBox="0 0 132 112" aria-hidden="true" class="home-art">
-            <g transform="rotate(-10 52 56)">
-              <rect x="22" y="14" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
-            </g>
-            <g transform="rotate(7 80 56)">
-              <rect x="48" y="12" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
-              <rect x="58" y="26" width="26" height="7" rx="3.5" fill="var(--primary)"></rect>
-              <rect x="58" y="40" width="36" height="5" rx="2.5" fill="var(--border)"></rect>
-              <rect x="58" y="51" width="30" height="5" rx="2.5" fill="var(--border)"></rect>
-              <rect x="58" y="62" width="34" height="5" rx="2.5" fill="var(--border)"></rect>
-            </g>
-            <circle cx="98" cy="84" r="18" fill="var(--primary)"></circle>
-            <path d="M98 92V77m0 0-6 6m6-6 6 6" fill="none" stroke="var(--primary-foreground)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-
-          <button type="button" id="hero-choose-btn" class="action-btn">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
-            <span data-i18n="chooseFile">Choose a file</span>
-          </button>
-          
-          <p class="text-sm text-muted-foreground" data-i18n="dropHint">or drop it anywhere on this card</p>
-          
-          <p class="inline-flex items-center gap-1.5 text-xs text-muted-foreground mt-2">
-            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-            <span data-i18n="privacyNotice">Free, no sign-up. Your file stays on your device.</span>
-          </p>
-        </div>
-      </div>
+      <p class="hero-intro-subtitle" data-i18n="mainHeroSub">Click any panel below to upload files or choose a tool</p>
     </section>
 
-    <!-- Bento Categories Section -->
-    <section class="bento-grid" aria-label="Tool Groups">
+    <!-- Bento Categories Section (Shown First!) -->
+    <section class="bento-grid" aria-label="Tool Groups" id="bento-panels">
       <!-- PDF Tools Bento Card -->
-      <div class="bento-tile fam-pdf glass-hover" onclick="document.querySelector('[data-category=pdf]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+      <div class="bento-tile fam-pdf glass-hover" data-panel-category="pdf" role="button" tabindex="0" title="Open PDF tools">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="size-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
@@ -325,7 +293,7 @@
       </div>
 
       <!-- Image Tools Bento Card -->
-      <div class="bento-tile fam-image glass-hover" onclick="document.querySelector('[data-category=image]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+      <div class="bento-tile fam-image glass-hover" data-panel-category="image" role="button" tabindex="0" title="Open Image tools">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="size-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
@@ -347,7 +315,7 @@
       </div>
 
       <!-- AI Write Bento Card -->
-      <div class="bento-tile fam-write glass-hover" onclick="document.querySelector('[data-category=write]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+      <div class="bento-tile fam-write glass-hover" data-panel-category="write" role="button" tabindex="0" title="Open AI Write tools">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="size-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
@@ -369,7 +337,7 @@
       </div>
 
       <!-- File Tools Bento Card -->
-      <div class="bento-tile fam-file glass-hover" onclick="document.querySelector('[data-category=file]').click(); document.getElementById('tools').scrollIntoView({behavior:'smooth'});">
+      <div class="bento-tile fam-file glass-hover" data-panel-category="file" role="button" tabindex="0" title="Open File tools">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="size-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
@@ -387,6 +355,56 @@
         <div class="bento-demo">
           <span class="bento-chip bg-teal-600 text-white font-mono" style="position: absolute; left: 8%; bottom: 18%;">.zip</span>
           <span class="bento-chip bg-card border border-border text-foreground font-mono" style="position: absolute; right: 10%; top: 18%;">JSON</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel Dropzone Section (Hidden initially, appears when a specific panel is clicked!) -->
+    <section id="panel-dropzone-section" class="panel-dropzone-section hidden" aria-label="Dropzone Uploader">
+      <div class="home-card relative">
+        <!-- Close button to dismiss uploader -->
+        <button type="button" id="dropzone-close-btn" class="dropzone-close-btn" title="Close" aria-label="Close uploader">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+
+        <div class="text-center mb-2.5">
+          <span id="dropzone-badge" class="panel-badge-pill">PDF Tools</span>
+          <h2 id="dropzone-title" class="text-xl sm:text-2xl font-bold mt-1.5 text-foreground">
+            Drop a file. Pick the job.
+          </h2>
+          <p id="dropzone-desc" class="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Free tools for PDFs, images, writing and files
+          </p>
+        </div>
+
+        <input type="file" id="hero-file-input" multiple class="hidden" />
+        <div id="hero-dropzone" class="dropzone-inner">
+          <svg viewBox="0 0 132 112" aria-hidden="true" class="home-art">
+            <g transform="rotate(-10 52 56)">
+              <rect x="22" y="14" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
+            </g>
+            <g transform="rotate(7 80 56)">
+              <rect x="48" y="12" width="56" height="72" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"></rect>
+              <rect x="58" y="26" width="26" height="7" rx="3.5" fill="var(--primary)"></rect>
+              <rect x="58" y="40" width="36" height="5" rx="2.5" fill="var(--border)"></rect>
+              <rect x="58" y="51" width="30" height="5" rx="2.5" fill="var(--border)"></rect>
+              <rect x="58" y="62" width="34" height="5" rx="2.5" fill="var(--border)"></rect>
+            </g>
+            <circle cx="98" cy="84" r="18" fill="var(--primary)"></circle>
+            <path d="M98 92V77m0 0-6 6m6-6 6 6" fill="none" stroke="var(--primary-foreground)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+
+          <button type="button" id="hero-choose-btn" class="action-btn">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+            <span id="hero-choose-btn-text" data-i18n="chooseFile">Choose a file</span>
+          </button>
+          
+          <p class="text-sm text-muted-foreground" data-i18n="dropHint">or drop it anywhere on this card</p>
+          
+          <p class="inline-flex items-center gap-1.5 text-xs text-muted-foreground mt-2">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span data-i18n="privacyNotice">Free, no sign-up. Your file stays on your device.</span>
+          </p>
         </div>
       </div>
     </section>
@@ -561,6 +579,6 @@
   </div>
 
   <!-- Main Scripts -->
-  <script type="module" src="js/app.js?v=13.0"></script>
+  <script type="module" src="js/app.js?v=14.0"></script>
 </body>
 </html>

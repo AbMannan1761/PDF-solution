@@ -19,6 +19,7 @@ class MarkPDFApp {
     this.applyTheme(this.currentTheme);
     this.setupThemeToggle();
     this.setupLanguageToggle();
+    this.setupBentoPanels();
     this.setupHeroDropzone();
     this.setupCategoryTabs();
     this.setupSearchPalette();
@@ -129,6 +130,9 @@ class MarkPDFApp {
         el.textContent = tool.title[lang] || tool.title.en;
       }
     });
+
+    // Refresh active panel dropzone text
+    this.refreshPanelDropzoneText();
   }
 
   // --- TOOL CARDS RENDERING ---
@@ -210,6 +214,136 @@ class MarkPDFApp {
     };
 
     return icons[iconName] || icons['file-text'];
+  }
+
+  // --- BENTO PANELS & CONDITIONAL DROPZONE ---
+  setupBentoPanels() {
+    this.activePanelCategory = null;
+    const tiles = document.querySelectorAll('.bento-tile[data-panel-category]');
+    tiles.forEach(tile => {
+      const category = tile.getAttribute('data-panel-category');
+      
+      const activate = () => {
+        this.openPanelDropzone(category, true);
+      };
+
+      tile.addEventListener('click', activate);
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+
+    const closeBtn = document.getElementById('dropzone-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.closePanelDropzone());
+    }
+  }
+
+  openPanelDropzone(category, smoothScroll = true) {
+    this.activePanelCategory = category;
+
+    // Highlight active bento tile
+    document.querySelectorAll('.bento-tile[data-panel-category]').forEach(tile => {
+      if (tile.getAttribute('data-panel-category') === category) {
+        tile.classList.add('active-panel');
+      } else {
+        tile.classList.remove('active-panel');
+      }
+    });
+
+    // Reveal dropzone section
+    const section = document.getElementById('panel-dropzone-section');
+    if (section) {
+      section.classList.remove('hidden');
+    }
+
+    // Refresh dynamic texts for this category
+    this.refreshPanelDropzoneText();
+
+    // Synchronize tools filter below
+    this.currentFilter = category;
+    const tabs = document.querySelectorAll('.category-tab-btn');
+    tabs.forEach(t => {
+      if (t.getAttribute('data-category') === category) {
+        t.classList.add('seg-on');
+        t.setAttribute('aria-selected', 'true');
+      } else {
+        t.classList.remove('seg-on');
+        t.setAttribute('aria-selected', 'false');
+      }
+    });
+    this.renderToolCards();
+
+    // Smooth scroll into view
+    if (smoothScroll && section) {
+      setTimeout(() => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    }
+  }
+
+  closePanelDropzone() {
+    this.activePanelCategory = null;
+    const section = document.getElementById('panel-dropzone-section');
+    if (section) {
+      section.classList.add('hidden');
+    }
+    document.querySelectorAll('.bento-tile[data-panel-category]').forEach(tile => {
+      tile.classList.remove('active-panel');
+    });
+  }
+
+  refreshPanelDropzoneText() {
+    if (!this.activePanelCategory) return;
+    const cat = this.activePanelCategory;
+    const t = this.t;
+
+    const badge = document.getElementById('dropzone-badge');
+    const title = document.getElementById('dropzone-title');
+    const desc = document.getElementById('dropzone-desc');
+    const btnText = document.getElementById('hero-choose-btn-text');
+    const fileInput = document.getElementById('hero-file-input');
+
+    const config = {
+      pdf: {
+        badge: t.panelPdfBadge,
+        title: t.panelPdfTitle,
+        desc: t.panelPdfDesc,
+        btn: t.panelPdfBtn,
+        accept: '.pdf,application/pdf'
+      },
+      image: {
+        badge: t.panelImageBadge,
+        title: t.panelImageTitle,
+        desc: t.panelImageDesc,
+        btn: t.panelImageBtn,
+        accept: 'image/*,.jpg,.jpeg,.png,.webp,.svg,.gif'
+      },
+      write: {
+        badge: t.panelAiBadge,
+        title: t.panelAiTitle,
+        desc: t.panelAiDesc,
+        btn: t.panelAiBtn,
+        accept: '.txt,.doc,.docx,.pdf,text/*'
+      },
+      file: {
+        badge: t.panelFileBadge,
+        title: t.panelFileTitle,
+        desc: t.panelFileDesc,
+        btn: t.panelFileBtn,
+        accept: '*/*'
+      }
+    };
+
+    const cfg = config[cat] || config.pdf;
+    if (badge) badge.textContent = cfg.badge;
+    if (title) title.textContent = cfg.title;
+    if (desc) desc.textContent = cfg.desc;
+    if (btnText) btnText.textContent = cfg.btn;
+    if (fileInput) fileInput.setAttribute('accept', cfg.accept);
   }
 
   // --- HERO DRAG & DROP ZONE ---

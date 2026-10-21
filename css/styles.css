@@ -437,42 +437,129 @@ button, input, select, textarea {
 }
 
 /* Hero Section */
-.hero-section {
-  padding: 1.25rem 1rem 0.5rem;
+.hero-intro-section {
+  padding: 1rem 1rem 0.25rem;
   text-align: center;
 }
 
-.hero-title {
-  font-size: 1.75rem;
+.hero-intro-title {
+  font-size: 1.45rem;
   font-weight: 800;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
   color: var(--foreground);
   margin: 0 auto;
 }
 
 @media (min-width: 640px) {
-  .hero-title {
-    font-size: 2.25rem;
+  .hero-intro-title {
+    font-size: 1.95rem;
   }
 }
 
-.hero-title span {
+.hero-intro-title span {
   color: var(--primary);
 }
 
-.hero-subtitle {
+.hero-intro-subtitle {
   margin-top: 0.35rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
   color: var(--muted-foreground);
+}
+
+/* Bento Family Grid (Shown First) */
+.bento-grid {
+  max-width: 80rem;
+  margin: 0.75rem auto 0;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.bento-tile.active-panel {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), 0 16px 32px -8px rgba(0, 0, 0, 0.16) !important;
+  transform: translateY(-2px);
+}
+
+/* Panel Dropzone Section (Revealed when a panel is clicked) */
+.panel-dropzone-section {
+  max-width: 46rem;
+  margin: 1.25rem auto 0;
+  padding: 0 1rem;
+  scroll-margin-top: 5rem;
+  transition: all 0.3s ease;
+}
+
+.panel-dropzone-section:not(.hidden) {
+  animation: dropzoneSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropzoneSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropzone-close-btn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.dropzone-close-btn:hover {
+  background: var(--border);
+  color: var(--foreground);
+  transform: scale(1.08);
+}
+
+.dropzone-close-btn svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.panel-badge-pill {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--primary);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 /* Hero Dropzone Card */
 .home-card {
   max-width: 44rem;
-  margin: 0.5rem auto 0;
-  padding: 0.6rem;
+  margin: 0 auto;
+  padding: 0.85rem;
   border-radius: 1.25rem;
   border: 1px solid var(--border);
   background: var(--card);
@@ -481,7 +568,7 @@ button, input, select, textarea {
 
 .dropzone-inner {
   display: flex;
-  min-height: 10rem;
+  min-height: 9.5rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -498,9 +585,9 @@ button, input, select, textarea {
 }
 
 .home-art {
-  height: 3.5rem;
-  width: 4.2rem;
-  margin-bottom: 0.15rem;
+  height: 3.25rem;
+  width: 4rem;
+  margin-bottom: 0.1rem;
 }
 
 .action-btn {
@@ -546,22 +633,6 @@ button, input, select, textarea {
 
 .secondary-btn:hover {
   background: var(--border);
-}
-
-/* Bento Family Grid */
-.bento-grid {
-  max-width: 80rem;
-  margin: 2rem auto 0;
-  padding: 0 1.25rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-@media (min-width: 1024px) {
-  .bento-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 .bento-tile {
