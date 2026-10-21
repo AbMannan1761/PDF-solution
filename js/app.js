@@ -1,6 +1,6 @@
 // MarkPDF Main Application Orchestrator
 
-import { ALL_TOOLS, TOOL_GROUPS } from './tools-data.js?v=13.0';
+import { ALL_TOOLS, TOOL_GROUPS, TOOL_CATEGORIES } from './tools-data.js?v=13.0';
 import { translations } from './translations.js?v=13.0';
 import { ToolRunner } from './tool-runner.js?v=13.0';
 
@@ -8,7 +8,8 @@ class MarkPDFApp {
   constructor() {
     this.currentLang = localStorage.getItem('markpdf:lang') || 'en';
     this.currentTheme = localStorage.getItem('markpdf:theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    this.currentFilter = 'popular';
+    this.currentFilter = 'all';
+    this.searchQuery = '';
     this.toolRunner = null;
     
     this.init();
@@ -19,6 +20,7 @@ class MarkPDFApp {
     this.applyTheme(this.currentTheme);
     this.setupThemeToggle();
     this.setupLanguageToggle();
+    this.setupToolsHeroSection();
     this.setupBentoPanels();
     this.setupHeroDropzone();
     this.setupCategoryTabs();
@@ -119,6 +121,19 @@ class MarkPDFApp {
     if (bentoAiCount) bentoAiCount.textContent = (lang === 'bn' ? '২১' : '21') + ' ' + t.toolsCountSuffix;
     if (bentoFileCount) bentoFileCount.textContent = (lang === 'bn' ? '১৮' : '18') + ' ' + t.toolsCountSuffix;
 
+    // Update in-page tool filter pills count
+    const pillAllCount = document.getElementById('pill-all-count');
+    const pillPdfCount = document.getElementById('pill-pdf-count');
+    const pillImgCount = document.getElementById('pill-img-count');
+    const pillWriteCount = document.getElementById('pill-write-count');
+    const pillFileCount = document.getElementById('pill-file-count');
+
+    if (pillAllCount) pillAllCount.textContent = lang === 'bn' ? '১০০' : '100';
+    if (pillPdfCount) pillPdfCount.textContent = lang === 'bn' ? '৪৩' : '43';
+    if (pillImgCount) pillImgCount.textContent = lang === 'bn' ? '১৮' : '18';
+    if (pillWriteCount) pillWriteCount.textContent = lang === 'bn' ? '২১' : '21';
+    if (pillFileCount) pillFileCount.textContent = lang === 'bn' ? '১৮' : '18';
+
     // Update FAQ text
     this.renderFaqSection();
 
@@ -135,58 +150,219 @@ class MarkPDFApp {
     this.refreshPanelDropzoneText();
   }
 
-  // --- TOOL CARDS RENDERING ---
+  // --- HERO TOOLS SECTION (MATCHES MarkPDF /tools) ---
+  setupToolsHeroSection() {
+    // 1. In-page filter pills
+    const pills = document.querySelectorAll('.tool-pill[data-pill-category]');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+
+        this.currentFilter = pill.getAttribute('data-pill-category') || 'all';
+        this.renderToolCards();
+      });
+    });
+
+    // 2. In-page prominent search input
+    const searchInput = document.getElementById('main-tools-search-input');
+    const clearBtn = document.getElementById('clear-search-btn');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value.trim().toLowerCase();
+        if (clearBtn) {
+          if (this.searchQuery) {
+            clearBtn.classList.remove('hidden');
+          } else {
+            clearBtn.classList.add('hidden');
+          }
+        }
+        this.renderToolCards();
+      });
+    }
+
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        this.searchQuery = '';
+        clearBtn.classList.add('hidden');
+        this.renderToolCards();
+        searchInput.focus();
+      });
+    }
+  }
+
+  // --- TOOL CARDS RENDERING (EXACT MATCH TO MarkPDF CATEGORIZED LAYOUT) ---
   renderToolCards() {
     const container = document.getElementById('tools-grid');
     if (!container) return;
     
     const lang = this.currentLang;
-    let filteredTools = ALL_TOOLS;
+    const q = this.searchQuery;
+    const filter = this.currentFilter;
 
-    if (this.currentFilter === 'popular') {
-      filteredTools = ALL_TOOLS.filter(t => t.popular);
-    } else if (this.currentFilter !== 'all') {
-      filteredTools = ALL_TOOLS.filter(t => t.group === this.currentFilter);
+    let filteredTools = ALL_TOOLS;
+    if (filter !== 'all') {
+      filteredTools = filteredTools.filter(t => t.group === filter);
+    }
+
+    if (q) {
+      filteredTools = filteredTools.filter(t => {
+        const titleEn = (t.title.en || '').toLowerCase();
+        const titleBn = (t.title.bn || '').toLowerCase();
+        const descEn = (t.short.en || '').toLowerCase();
+        const descBn = (t.short.bn || '').toLowerCase();
+        const kw = (t.keywords || []).map(k => k.toLowerCase()).join(' ');
+        return titleEn.includes(q) || titleBn.includes(q) || descEn.includes(q) || descBn.includes(q) || kw.includes(q);
+      });
     }
 
     container.innerHTML = '';
 
-    filteredTools.forEach(tool => {
-      const card = document.createElement('div');
-      card.className = 'glass glass-hover group flex min-w-0 cursor-pointer flex-col rounded-2xl p-4 transition-all duration-200 border border-border';
-      card.setAttribute('role', 'button');
-      card.setAttribute('tabindex', '0');
-
-      const title = tool.title[lang] || tool.title.en;
-      const desc = tool.short[lang] || tool.short.en;
-      const groupName = this.t[tool.group + 'Tools'] || tool.group;
-
-      card.innerHTML = `
-        <div class="flex items-center gap-3">
-          <div class="tool-icon-wrapper size-11 rounded-xl flex items-center justify-center shrink-0" style="background: var(--tool-bg, #ecfdf5); color: var(--tool-color, #059669);">
-            ${this.getToolIconSvg(tool.icon)}
+    // If live search is active
+    if (q) {
+      if (filteredTools.length === 0) {
+        container.innerHTML = `
+          <div class="tools-empty-search">
+            <svg class="tools-empty-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <h3 class="tools-empty-search-title">${this.t.noResults || 'No tools found'} "${this.searchQuery}"</h3>
+            <p class="text-sm">${lang === 'bn' ? 'অন্য কোনো নাম বা কিওয়ার্ড দিয়ে খুঁজুন।' : 'Try searching for another keyword or tool name.'}</p>
           </div>
-          <div class="min-w-0">
-            <h3 class="text-base font-bold leading-tight group-hover:text-primary transition-colors truncate">${title}</h3>
-            <span class="mt-0.5 block truncate text-xs font-medium text-muted-foreground">${groupName}</span>
+        `;
+        return;
+      }
+
+      const grid = document.createElement('div');
+      grid.className = 'category-tools-grid';
+      filteredTools.forEach(tool => {
+        grid.appendChild(this.createToolCardElement(tool));
+      });
+      container.appendChild(grid);
+      return;
+    }
+
+    // Default: Grouped by categories (like MarkPDF /tools)
+    const visibleCategories = filter === 'all'
+      ? TOOL_CATEGORIES
+      : TOOL_CATEGORIES.filter(c => c.group === filter);
+
+    visibleCategories.forEach(cat => {
+      const catTools = filteredTools.filter(t => t.category === cat.id);
+      if (catTools.length === 0) return;
+
+      const groupSection = document.createElement('div');
+      groupSection.className = 'category-group-section';
+      groupSection.innerHTML = `
+        <div class="category-group-header">
+          <div class="category-group-icon-wrap">
+            ${this.getCategoryIconSvg(cat.id, cat.group)}
           </div>
+          <h2 class="category-group-title">${cat.title[lang] || cat.title.en}</h2>
         </div>
-        <p class="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">${desc}</p>
+        <div class="category-tools-grid"></div>
       `;
 
-      card.addEventListener('click', () => {
-        this.toolRunner.open(tool);
+      const grid = groupSection.querySelector('.category-tools-grid');
+      catTools.forEach(tool => {
+        grid.appendChild(this.createToolCardElement(tool));
       });
 
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.toolRunner.open(tool);
-        }
-      });
-
-      container.appendChild(card);
+      container.appendChild(groupSection);
     });
+
+    // Check for any tools without explicit category in visibleCategories
+    const renderedToolIds = new Set();
+    visibleCategories.forEach(cat => {
+      filteredTools.filter(t => t.category === cat.id).forEach(t => renderedToolIds.add(t.id));
+    });
+    const leftoverTools = filteredTools.filter(t => !renderedToolIds.has(t.id));
+
+    if (leftoverTools.length > 0) {
+      const groupSection = document.createElement('div');
+      groupSection.className = 'category-group-section';
+      groupSection.innerHTML = `
+        <div class="category-group-header">
+          <div class="category-group-icon-wrap">
+            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h2 class="category-group-title">${lang === 'bn' ? 'অন্যান্য টুলস' : 'More tools'}</h2>
+        </div>
+        <div class="category-tools-grid"></div>
+      `;
+      const grid = groupSection.querySelector('.category-tools-grid');
+      leftoverTools.forEach(tool => {
+        grid.appendChild(this.createToolCardElement(tool));
+      });
+      container.appendChild(groupSection);
+    }
+  }
+
+  createToolCardElement(tool) {
+    const lang = this.currentLang;
+    const card = document.createElement('div');
+    card.className = 'tool-card group';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    const title = tool.title[lang] || tool.title.en;
+    const desc = tool.short[lang] || tool.short.en;
+    const groupName = this.t[tool.group + 'Tools'] || tool.group;
+
+    card.innerHTML = `
+      <div class="tool-card-head">
+        <div class="tool-icon-wrapper shrink-0">
+          ${this.getToolIconSvg(tool.icon)}
+        </div>
+        <div class="tool-info min-w-0">
+          <h3 class="tool-title truncate">${title}</h3>
+          <span class="tool-badge truncate">${groupName}</span>
+        </div>
+      </div>
+      <p class="tool-desc">${desc}</p>
+    `;
+
+    card.addEventListener('click', () => {
+      this.toolRunner.open(tool);
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.toolRunner.open(tool);
+      }
+    });
+
+    return card;
+  }
+
+  getCategoryIconSvg(catId, group) {
+    const icons = {
+      organize: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`,
+      optimize: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`,
+      toPdf: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+      fromPdf: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>`,
+      edit: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+      security: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      ai: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`,
+      imgBasic: `<svg class="w-5 h-5 text-orange-600 dark:text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
+      imgStyle: `<svg class="w-5 h-5 text-pink-600 dark:text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`,
+      imgSmart: `<svg class="w-5 h-5 text-amber-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+      writeCreate: `<svg class="w-5 h-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+      writeImprove: `<svg class="w-5 h-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      writeSocial: `<svg class="w-5 h-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+      fileConvert: `<svg class="w-5 h-5 text-teal-600 dark:text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>`,
+      fileUtil: `<svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>`,
+      fileText: `<svg class="w-5 h-5 text-teal-600 dark:text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`
+    };
+    return icons[catId] || icons.organize;
   }
 
   getToolIconSvg(iconName) {

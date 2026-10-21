@@ -15,6 +15,12 @@ export const translations = {
     fileTools: "File tools",
     more: "More",
     
+    // All tools Hero
+    allToolsHeroTitle: "All tools",
+    allToolsHeroSub: "Pick a tool by what you want to do. Every one of them is free.",
+    searchToolsPlaceholder: "Search tools...",
+    pillAll: "All",
+    
     // Hero
     heroTitleLine1: "Drop a file.",
     heroTitleLine2: "Pick the job.",
@@ -131,6 +137,12 @@ export const translations = {
     aiWrite: "AI রাইটিং",
     fileTools: "ফাইল টুলস",
     more: "আরও",
+    
+    // All tools Hero
+    allToolsHeroTitle: "সকল টুলস",
+    allToolsHeroSub: "আপনার প্রয়োজনীয় টুলটি বেছে নিন। প্রতিটি টুল সম্পূর্ণ ফ্রি।",
+    searchToolsPlaceholder: "টুল অনুসন্ধান করুন...",
+    pillAll: "সবগুলো",
     
     // Hero
     heroTitleLine1: "ফাইল দিন।",
