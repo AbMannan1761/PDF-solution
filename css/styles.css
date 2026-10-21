@@ -155,6 +155,22 @@ button, input, select, textarea {
   color: var(--primary);
 }
 
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+
+.brand-subtext {
+  font-size: 0.68rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
 /* Nav Menu */
 .nav-links {
   display: none;
